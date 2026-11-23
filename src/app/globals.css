@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #ffffff;
+  --color-sand: #f1eadd;
+  --color-beige: #e6dcc9;
+  --color-gold: #b8934a;
+  --color-gold-dark: #98763a;
+  --color-ink: #2b2622;
+  --color-muted: #6f655b;
+  --color-line: #e5dccb;
+  --font-serif: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: var(--font-poppins), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: #fff;
+}
+
+.container-x {
+  width: 100%;
+  max-width: 96rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .container-x { padding-inline: 2.25rem; }
+}
+@media (min-width: 1024px) {
+  .container-x { padding-inline: 5rem; }
+}
+
+.card-shadow {
+  box-shadow: 0 1px 2px rgba(43, 38, 34, 0.04), 0 12px 32px -12px rgba(43, 38, 34, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ---- Motion ---- */
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+.animate-kenburns { animation: kenburns 22s ease-out forwards; }
+
+.lift { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease; }
+.lift:hover { transform: translateY(-6px); }
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float { animation: float-y 3.5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-kenburns, .animate-float { animation: none; }
+  .lift:hover { transform: none; }
+}

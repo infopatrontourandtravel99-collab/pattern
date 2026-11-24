@@ -38,7 +38,7 @@ export default function Header() {
     >
       <div className={`container-x flex items-center justify-between transition-all duration-300 ${scrolled ? "h-16" : "h-16 sm:h-20"}`}>
         <Logo />
-        <nav aria-label="Primary" className="hidden items-center gap-5 lg:flex xl:gap-8">
+        <nav aria-label="Primary" className="hidden items-center gap-5 xl:flex 2xl:gap-8">
           {siteConfig.nav.map((n) => (
             <Link
               key={n.href}
@@ -61,7 +61,7 @@ export default function Header() {
           </button>
           <button
             type="button"
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full lg:hidden text-ink`}
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-full xl:hidden text-ink`}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -72,7 +72,7 @@ export default function Header() {
         </div>
       </div>
       {open && (
-        <nav id="mobile-menu" aria-label="Mobile" className="border-t border-line bg-ivory lg:hidden">
+        <nav id="mobile-menu" aria-label="Mobile" className="border-t border-line bg-ivory xl:hidden">
           <ul className="container-x flex flex-col py-4">
             {siteConfig.nav.map((n) => (
               <li key={n.href}>

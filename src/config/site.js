@@ -25,9 +25,9 @@ export const siteConfig = {
     hours: "Daily, 8:00 AM – 10:00 PM IST",
   },
   social: {
-    instagram: "https://instagram.com/",
-    facebook: "https://facebook.com/",
-    youtube: "https://youtube.com/",
+    instagram: "https://www.instagram.com/patron_tour_and_travel",
+    facebook: "https://www.facebook.com/share/1AVXT6ZVSy/",
+    google: "https://share.google/WTCEcmdPGk4WruvJ5",
   },
   // Homepage stats bar. SAMPLE FIGURES — replace with your real numbers before launch.
   stats: [

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone, Camera, Share2, PlayCircle } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { InstagramIcon, FacebookIcon, GoogleIcon } from "@/components/common/SocialIcons";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
 import { siteConfig } from "@/config/site";
 import { destinations } from "@/data/destinations";
@@ -15,9 +16,9 @@ const quick = [
 export default function Footer() {
   const c = siteConfig.contact;
   const socials = [
-    { label: "Instagram", href: siteConfig.social.instagram, Icon: Camera },
-    { label: "Facebook", href: siteConfig.social.facebook, Icon: Share2 },
-    { label: "YouTube", href: siteConfig.social.youtube, Icon: PlayCircle },
+    { label: "Instagram", href: siteConfig.social.instagram, Icon: InstagramIcon },
+    { label: "Facebook", href: siteConfig.social.facebook, Icon: FacebookIcon },
+    { label: "Google", href: siteConfig.social.google, Icon: GoogleIcon },
   ];
   return (
     <footer className="mt-10 bg-ink text-ivory/80">
@@ -30,7 +31,7 @@ export default function Footer() {
           <div className="mt-6 flex gap-3">
             {socials.map(({ label, href, Icon }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 transition-colors hover:border-gold hover:text-gold">
-                <Icon size={17} />
+                <Icon size={18} />
               </a>
             ))}
           </div>

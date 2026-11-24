@@ -2,6 +2,10 @@ import PageHero from "@/components/common/PageHero";
 import SmartImage from "@/components/common/SmartImage";
 import WhyChoose from "@/components/home/WhyChoose";
 import FinalCTA from "@/components/common/FinalCTA";
+import SectionHeading from "@/components/common/SectionHeading";
+import TeamCard from "@/components/team/TeamCard";
+import { teamGroups } from "@/data/team";
+import { slider5, slide } from "@/lib/slider";
 import { images } from "@/data/images";
 import { siteConfig } from "@/config/site";
 import { buildMetadata } from "@/lib/seo";
@@ -28,14 +32,27 @@ export default function AboutPage() {
             <p className="mt-4 leading-relaxed text-muted">
               Whether you are planning a honeymoon, a family holiday or an offbeat adventure, our team tailors each trip to your pace and budget, and stays reachable throughout your travels.
             </p>
-            <p className="mt-4 text-xs text-muted">Edit this page copy with your real company story, founding year and team details.</p>
-          </div>
+                      </div>
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] card-shadow">
             <SmartImage src={images.about} alt="Dal Lake at sunrise in Kashmir" />
           </div>
         </div>
       </section>
       <WhyChoose />
+
+      <section id="team" className="scroll-mt-24 py-10 sm:py-14">
+        <div className="container-x">
+          <SectionHeading eyebrow="Our team" title="Meet the people behind your trip" text="The team that plans, books and drives your Kashmir journey." />
+          <div className={slider5}>
+            {teamGroups.flatMap((g) => g.members).map((m, i) => (
+              <div key={m.name} className={slide}>
+                <TeamCard member={m} index={i} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <FinalCTA />
     </>
   );

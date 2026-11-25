@@ -15,8 +15,7 @@ const quick = [
 ];
 
 export default async function Footer() {
-  const siteConfig = await getSiteConfig();
-  const packages = await getPackages();
+  const [siteConfig, packages] = await Promise.all([getSiteConfig(), getPackages()]);
   const c = siteConfig.contact;
   const socials = [
     { label: "Instagram", href: siteConfig.social.instagram, Icon: InstagramIcon },

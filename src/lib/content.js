@@ -1,10 +1,12 @@
+import { cache } from "react";
 import { getDb } from "@/lib/mongo";
 import { siteConfig } from "@/config/site";
 import { teamGroups } from "@/data/team";
 import { adminSections } from "@/lib/adminSchema";
 
 // Read editable content from MongoDB; fall back to the built-in defaults.
-export async function getContent(key) {
+// cache() = one database query per key per request, however many components ask.
+export const getContent = cache(async (key) => {
   const def = adminSections[key]?.defaults ?? null;
   const db = await getDb();
   if (!db) return def;
@@ -14,7 +16,7 @@ export async function getContent(key) {
   } catch {
     return def;
   }
-}
+});
 
 export async function saveContent(key, data) {
   const db = await getDb();

@@ -2,18 +2,21 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { InstagramIcon, FacebookIcon, GoogleIcon } from "@/components/common/SocialIcons";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig, getPackages } from "@/lib/content";
+import { siteConfig as baseConfig } from "@/config/site";
 import { destinations } from "@/data/destinations";
-import { packages } from "@/data/packages";
+
 import { whatsappLink, generalMessage } from "@/lib/whatsapp";
 import Logo from "./Logo";
 
 const quick = [
-  ...siteConfig.nav.filter((n) => n.href !== "/"),
+  ...baseConfig.nav.filter((n) => n.href !== "/"),
   { label: "Blog", href: "/blog" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const siteConfig = await getSiteConfig();
+  const packages = await getPackages();
   const c = siteConfig.contact;
   const socials = [
     { label: "Instagram", href: siteConfig.social.instagram, Icon: InstagramIcon },

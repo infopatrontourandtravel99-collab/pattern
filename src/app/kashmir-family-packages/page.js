@@ -1,5 +1,5 @@
 import PackageListPage from "@/components/packages/PackageListPage";
-import { byTag } from "@/data/packages";
+import { packagesByTag } from "@/lib/content";
 import { images } from "@/data/images";
 import { buildMetadata } from "@/lib/seo";
 
@@ -11,7 +11,8 @@ export const metadata = buildMetadata({
   image: images.gardens,
 });
 
-export default function Page() {
+export default async function Page() {
+  const items = await packagesByTag("family");
   return (
     <PackageListPage
       h1="Kashmir Family Tour Packages"
@@ -20,7 +21,7 @@ export default function Page() {
       crumbName="Family Packages"
       path={path}
       currentHref={path}
-      items={byTag("family")}
+      items={items}
       intro="Family itineraries use shorter drives, spacious private vehicles and easy outdoor activities so everyone enjoys the journey."
     />
   );

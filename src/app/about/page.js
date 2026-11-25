@@ -4,7 +4,7 @@ import WhyChoose from "@/components/home/WhyChoose";
 import FinalCTA from "@/components/common/FinalCTA";
 import SectionHeading from "@/components/common/SectionHeading";
 import TeamCard from "@/components/team/TeamCard";
-import { teamGroups } from "@/data/team";
+import { getContent } from "@/lib/content";
 import { slider5, slide } from "@/lib/slider";
 import { images } from "@/data/images";
 import { siteConfig } from "@/config/site";
@@ -17,24 +17,22 @@ export const metadata = buildMetadata({
   image: images.about,
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const about = await getContent("about");
+  const { members } = await getContent("team");
   return (
     <>
-      <PageHero title="About Patron Tour And Travels" subtitle="Local people. Honest planning. Beautifully paced journeys." image={images.about} crumbs={[{ name: "About Us", href: "/about" }]} />
+      <PageHero title={about.heroTitle} subtitle={about.heroSubtitle} image={about.heroImage || images.about} crumbs={[{ name: "About Us", href: "/about" }]} />
       <section className="py-10 sm:py-14">
         <div className="container-x grid items-center gap-12 lg:grid-cols-2">
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-gold-dark">Our story</p>
-            <h2 className="mt-3 font-serif text-2xl font-semibold sm:text-4xl">Born in the Valley, built around your journey</h2>
-            <p className="mt-5 leading-relaxed text-muted">
-              {siteConfig.name} was created by Kashmir locals who wanted visitors to experience Kashmir the way it deserves: slowly, comfortably and with genuine hospitality. We handle everything from hotel selection to private transport, so you can focus on the view.
-            </p>
-            <p className="mt-4 leading-relaxed text-muted">
-              Whether you are planning a honeymoon, a family holiday or an offbeat adventure, our team tailors each trip to your pace and budget, and stays reachable throughout your travels.
-            </p>
-                      </div>
+            <h2 className="mt-3 font-serif text-2xl font-semibold sm:text-4xl">{about.storyTitle}</h2>
+            {about.story1 && <p className="mt-5 leading-relaxed text-muted">{about.story1}</p>}
+            {about.story2 && <p className="mt-4 leading-relaxed text-muted">{about.story2}</p>}
+          </div>
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] card-shadow">
-            <SmartImage src={images.about} alt="Dal Lake at sunrise in Kashmir" />
+            <SmartImage src={about.storyImage || images.about} alt="Our story" />
           </div>
         </div>
       </section>
@@ -44,8 +42,8 @@ export default function AboutPage() {
         <div className="container-x">
           <SectionHeading eyebrow="Our team" title="Meet the people behind your trip" text="The team that plans, books and drives your Kashmir journey." />
           <div className={slider5}>
-            {teamGroups.flatMap((g) => g.members).map((m, i) => (
-              <div key={m.name} className={slide}>
+            {members.map((m, i) => (
+              <div key={`${m.name}-${i}`} className={slide}>
                 <TeamCard member={m} index={i} />
               </div>
             ))}

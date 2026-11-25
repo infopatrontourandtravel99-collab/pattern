@@ -1,9 +1,10 @@
 import SectionHeading from "@/components/common/SectionHeading";
 import PackageCard from "@/components/packages/PackageCard";
 import Button from "@/components/common/Button";
-import { packages } from "@/data/packages";
+import { getPackages } from "@/lib/content";
 
-export default function PopularPackages() {
+export default async function PopularPackages() {
+  const packages = await getPackages();
   return (
     <section className="py-10 sm:py-14">
       <div className="container-x">

@@ -1,6 +1,6 @@
 import PackageListPage from "@/components/packages/PackageListPage";
 import JsonLd from "@/components/seo/JsonLd";
-import { packages } from "@/data/packages";
+import { getPackages } from "@/lib/content";
 import { images } from "@/data/images";
 import { buildMetadata } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/utils";
@@ -13,7 +13,8 @@ export const metadata = buildMetadata({
   image: images.hero,
 });
 
-export default function Page() {
+export default async function Page() {
+  const packages = await getPackages();
   const list = { "@context": "https://schema.org", "@type": "ItemList", itemListElement: packages.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: absoluteUrl(`/packages/${p.slug}`), name: p.title })) };
   return (
     <>

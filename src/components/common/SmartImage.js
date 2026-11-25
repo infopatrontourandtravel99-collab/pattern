@@ -9,7 +9,7 @@ export default function SmartImage({ src, alt, sizes = "(min-width: 1024px) 50vw
       fill
       sizes={sizes}
       priority={priority}
-      unoptimized={src.endsWith(".svg")}
+      unoptimized={src.endsWith(".svg") || src.startsWith("/api/files/")}
       className={`object-cover ${className}`}
     />
   );

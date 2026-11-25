@@ -12,18 +12,18 @@ import JsonLd from "@/components/seo/JsonLd";
 import { siteConfig } from "@/config/site";
 import { images } from "@/data/images";
 import { destinations } from "@/data/destinations";
-import { packages, getPackage } from "@/data/packages";
+import { getPackages, getPackageBySlug } from "@/lib/content";
 import { buildMetadata, packageSchema, faqSchema } from "@/lib/seo";
 import { formatPrice } from "@/lib/utils";
 import { whatsappLink, packageMessage } from "@/lib/whatsapp";
 
-export function generateStaticParams() {
-  return packages.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getPackages()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const p = getPackage(slug);
+  const p = await getPackageBySlug(slug);
   if (!p) return {};
   return buildMetadata({
     title: `${p.title} – ${p.duration} Kashmir Tour Package`,
@@ -50,11 +50,11 @@ const tabs = [
 
 export default async function PackagePage({ params }) {
   const { slug } = await params;
-  const p = getPackage(slug);
+  const p = await getPackageBySlug(slug);
   if (!p) notFound();
 
   const places = p.route.split(" · ");
-  const others = packages.filter((x) => x.slug !== p.slug).slice(0, 3);
+  const others = (await getPackages()).filter((x) => x.slug !== p.slug).slice(0, 3);
 
   // Gallery: main package photo + photos of the places on the route, padded with extras.
   const placeShots = places

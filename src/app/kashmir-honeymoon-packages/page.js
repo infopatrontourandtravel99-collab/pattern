@@ -1,5 +1,5 @@
 import PackageListPage from "@/components/packages/PackageListPage";
-import { byTag } from "@/data/packages";
+import { packagesByTag } from "@/lib/content";
 import { images } from "@/data/images";
 import { buildMetadata } from "@/lib/seo";
 
@@ -11,7 +11,8 @@ export const metadata = buildMetadata({
   image: images.honeymoon,
 });
 
-export default function Page() {
+export default async function Page() {
+  const items = await packagesByTag("honeymoon");
   return (
     <PackageListPage
       h1="Kashmir Honeymoon Packages"
@@ -20,7 +21,7 @@ export default function Page() {
       crumbName="Honeymoon Packages"
       path={path}
       currentHref={path}
-      items={byTag("honeymoon")}
+      items={items}
       intro="Our honeymoon journeys are paced for privacy and romance, with special touches arranged at every stay. Tell us your travel dates and we will shape the plan around you."
     />
   );

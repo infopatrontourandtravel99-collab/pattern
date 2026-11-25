@@ -4,6 +4,7 @@ import { siteConfig } from "@/config/site";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingActions from "@/components/layout/FloatingActions";
+import SiteChrome from "@/components/layout/SiteChrome";
 import JsonLd from "@/components/seo/JsonLd";
 import { organizationSchema, travelAgencySchema } from "@/lib/seo";
 
@@ -29,10 +30,7 @@ export default function RootLayout({ children }) {
         </a>
         <JsonLd data={organizationSchema()} />
         <JsonLd data={travelAgencySchema()} />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <FloatingActions />
+        <SiteChrome top={<Header />} bottom={<><Footer /><FloatingActions /></>}>{children}</SiteChrome>
       </body>
     </html>
   );

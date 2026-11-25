@@ -1,9 +1,10 @@
 import { Phone } from "lucide-react";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/lib/content";
 import { whatsappLink, generalMessage } from "@/lib/whatsapp";
 
-export default function FloatingActions() {
+export default async function FloatingActions() {
+  const siteConfig = await getSiteConfig();
   return (
     <div className="fixed bottom-4 right-3 z-40 flex flex-col gap-3 sm:right-6">
       <a

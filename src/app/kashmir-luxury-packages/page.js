@@ -1,5 +1,5 @@
 import PackageListPage from "@/components/packages/PackageListPage";
-import { byTag } from "@/data/packages";
+import { packagesByTag } from "@/lib/content";
 import { images } from "@/data/images";
 import { buildMetadata } from "@/lib/seo";
 
@@ -11,7 +11,8 @@ export const metadata = buildMetadata({
   image: images.houseboat,
 });
 
-export default function Page() {
+export default async function Page() {
+  const items = await packagesByTag("luxury");
   return (
     <PackageListPage
       h1="Kashmir Luxury Tour Packages"
@@ -20,7 +21,7 @@ export default function Page() {
       crumbName="Luxury Packages"
       path={path}
       currentHref={path}
-      items={byTag("luxury")}
+      items={items}
       intro="Our luxury Kashmir journeys combine the finest properties with private guides and seamless logistics, so you can simply enjoy the view."
     />
   );

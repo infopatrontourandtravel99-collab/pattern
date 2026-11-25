@@ -1,9 +1,10 @@
 import { destinations } from "@/data/destinations";
-import { packages } from "@/data/packages";
+import { getPackages } from "@/lib/content";
 import { posts } from "@/data/blog";
 import { absoluteUrl } from "@/lib/utils";
 
-export default function sitemap() {
+export default async function sitemap() {
+  const packages = await getPackages();
   const now = new Date();
   const fixed = ["/", "/about", "/destinations", "/kashmir-tour-packages", "/kashmir-honeymoon-packages", "/kashmir-family-packages", "/kashmir-luxury-packages", "/experiences", "/vehicles", "/contact", "/blog", "/privacy-policy", "/terms"];
   return [

@@ -3,7 +3,7 @@ import WhatsAppIcon from "@/components/common/WhatsAppIcon";
 import PageHero from "@/components/common/PageHero";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import Button from "@/components/common/Button";
-import { siteConfig } from "@/config/site";
+import { getSiteConfig } from "@/lib/content";
 import { images } from "@/data/images";
 import { buildMetadata } from "@/lib/seo";
 import { whatsappLink, generalMessage } from "@/lib/whatsapp";
@@ -22,6 +22,7 @@ export default async function ContactPage({ searchParams }) {
     date: typeof sp?.date === "string" ? sp.date : "",
     travelers: typeof sp?.travelers === "string" ? sp.travelers : "",
   };
+  const siteConfig = await getSiteConfig();
   const c = siteConfig.contact;
   const rows = [
     ...c.phones.map((p, i) => ({ Icon: Phone, label: i === 0 ? "Call us" : "Call us (alternate)", value: p.display, href: `tel:${p.href}` })),

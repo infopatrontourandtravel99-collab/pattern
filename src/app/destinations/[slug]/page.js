@@ -9,7 +9,7 @@ import PackageCard from "@/components/packages/PackageCard";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import JsonLd from "@/components/seo/JsonLd";
 import { destinations, getDestination } from "@/data/destinations";
-import { packages } from "@/data/packages";
+import { getPackages } from "@/lib/content";
 import { buildMetadata, destinationSchema, faqSchema } from "@/lib/seo";
 import { whatsappLink, destinationMessage } from "@/lib/whatsapp";
 
@@ -33,7 +33,7 @@ export default async function DestinationPage({ params }) {
   const { slug } = await params;
   const d = getDestination(slug);
   if (!d) notFound();
-  const relatedPkgs = packages.filter((p) => p.route.includes(d.name.split(" ")[0])).slice(0, 2);
+  const relatedPkgs = (await getPackages()).filter((p) => p.route.includes(d.name.split(" ")[0])).slice(0, 2);
   const more = destinations.filter((x) => x.slug !== d.slug).slice(0, 4);
 
   return (

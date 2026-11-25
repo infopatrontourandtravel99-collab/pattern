@@ -2,9 +2,10 @@ import SectionHeading from "@/components/common/SectionHeading";
 import { slider4, slide } from "@/lib/slider";
 import DestinationCard from "@/components/destinations/DestinationCard";
 import Button from "@/components/common/Button";
-import { destinations } from "@/data/destinations";
+import { getDestinations } from "@/lib/content";
 
-export default function DestinationsSection() {
+export default async function DestinationsSection() {
+  const destinations = await getDestinations();
   return (
     <section className="py-10 sm:py-14">
       <div className="container-x">

@@ -2,6 +2,7 @@ import { cache } from "react";
 import { getDb } from "@/lib/mongo";
 import { siteConfig } from "@/config/site";
 import { teamGroups } from "@/data/team";
+import { images } from "@/data/images";
 import { adminSections } from "@/lib/adminSchema";
 
 // Read editable content from MongoDB; fall back to the built-in defaults.
@@ -59,7 +60,23 @@ export const defaultTeam = teamGroups.flatMap((g) => g.members);
 // ---- Packages (editable in admin) ----
 export async function getPackages() {
   const c = await getContent("packages");
-  return (c?.items ?? []).filter((p) => p.slug && p.title);
+  return (c?.items ?? []).filter((p) => p.slug && p.title).map((p) => ({ ...p, image: p.image || images.hero }));
 }
 export const getPackageBySlug = async (slug) => (await getPackages()).find((p) => p.slug === slug);
 export const packagesByTag = async (tag) => (await getPackages()).filter((p) => (p.tags ?? []).includes(tag));
+
+// ---- Destinations and vehicles (editable in admin) ----
+export async function getDestinations() {
+  const c = await getContent("destinations");
+  return (c?.items ?? [])
+    .filter((d) => d.slug && d.name)
+    .map((d) => ({ ...d, image: d.image || images.hero, highlights: d.highlights ?? [], faqs: (d.faqs ?? []).filter((x) => x.q && x.a) }));
+}
+export const getDestinationBySlug = async (slug) => (await getDestinations()).find((d) => d.slug === slug);
+
+export async function getVehicles() {
+  const c = await getContent("vehicles");
+  return (c?.items ?? [])
+    .filter((v) => v.slug && v.name)
+    .map((v) => ({ ...v, art: v.art || "sedan", group: v.group || "small", features: v.features ?? [] }));
+}

@@ -1,20 +1,24 @@
 import { teamGroups } from "@/data/team";
 import { images } from "@/data/images";
 import { packages as defaultPackages } from "@/data/packages";
+import { destinations as defaultDestinations } from "@/data/destinations";
+import { vehicles as defaultVehicles } from "@/data/vehicles";
 
 // Describes every editable section of the admin panel.
-// field types: text | textarea | image | list (items = nested fields)
+// field types: text | textarea | number | image | select | csv | lines | list (items = nested fields)
+// half: true puts two short fields side by side. path = public page that shows the section.
 export const adminSections = {
   settings: {
     title: "Contact & Social",
+    path: "/contact",
     desc: "Phone, email, addresses and social links (footer, contact page, call button).",
     fields: [
-      { name: "phone1", label: "Phone 1", type: "text" },
-      { name: "phone2", label: "Phone 2", type: "text" },
-      { name: "email", label: "Email", type: "text" },
+      { name: "phone1", label: "Phone 1", type: "text", half: true },
+      { name: "phone2", label: "Phone 2", type: "text", half: true },
+      { name: "email", label: "Email", type: "text", half: true },
       { name: "headOffice", label: "Head office address", type: "textarea" },
       { name: "branchOffice", label: "Branch office address", type: "textarea" },
-      { name: "hours", label: "Working hours", type: "text" },
+      { name: "hours", label: "Working hours", type: "text", half: true },
       { name: "instagram", label: "Instagram link", type: "text" },
       { name: "facebook", label: "Facebook link", type: "text" },
       { name: "google", label: "Google link", type: "text" },
@@ -33,6 +37,7 @@ export const adminSections = {
   },
   home: {
     title: "Home page",
+    path: "/",
     desc: "Main banner heading, text, image and the 'Complete Kashmir' text.",
     fields: [
       { name: "heroImage", label: "Banner image", type: "image" },
@@ -47,6 +52,7 @@ export const adminSections = {
   },
   about: {
     title: "About page",
+    path: "/about",
     desc: "Our story text and image.",
     fields: [
       { name: "heroTitle", label: "Page title", type: "text" },
@@ -69,16 +75,19 @@ export const adminSections = {
   },
   team: {
     title: "Team",
+    path: "/about",
     desc: "Add, remove or edit team members and their photos.",
     fields: [
       {
         name: "members",
         label: "Team members",
         type: "list",
+        itemName: "team member",
         itemLabel: "name",
+        itemMeta: "role",
         items: [
-          { name: "name", label: "Name", type: "text" },
-          { name: "role", label: "Role", type: "text" },
+          { name: "name", label: "Name", type: "text", half: true },
+          { name: "role", label: "Role", type: "text", half: true },
           { name: "image", label: "Photo", type: "image" },
         ],
       },
@@ -87,18 +96,21 @@ export const adminSections = {
   },
   packages: {
     title: "Tour Packages",
+    path: "/kashmir-tour-packages",
     desc: "Add, edit or delete tour packages: name, price, photo, itinerary, inclusions and more.",
     fields: [
       {
         name: "items",
         label: "Packages",
         type: "list",
+        itemName: "package",
         itemLabel: "title",
+        itemMeta: "duration",
         items: [
           { name: "title", label: "Package name", type: "text" },
           { name: "slug", label: "Web address (auto-filled from the name if empty, e.g. kashmir-5-days)", type: "text" },
-          { name: "duration", label: "Duration (e.g. 4 Nights / 5 Days)", type: "text" },
-          { name: "price", label: "Starting price per person (₹)", type: "number" },
+          { name: "duration", label: "Duration (e.g. 4 Nights / 5 Days)", type: "text", half: true },
+          { name: "price", label: "Starting price per person (₹)", type: "number", half: true },
           { name: "route", label: "Route (places separated by · )", type: "text" },
           { name: "image", label: "Main photo", type: "image" },
           { name: "description", label: "Short description", type: "textarea" },
@@ -110,7 +122,9 @@ export const adminSections = {
             name: "itinerary",
             label: "Day-by-day itinerary",
             type: "list",
+            itemName: "day",
             itemLabel: "title",
+            itemMeta: "day",
             items: [
               { name: "day", label: "Day (e.g. Day 1)", type: "text" },
               { name: "title", label: "Title", type: "text" },
@@ -121,5 +135,96 @@ export const adminSections = {
       },
     ],
     defaults: { items: defaultPackages },
+  },
+  destinations: {
+    title: "Destinations",
+    path: "/destinations",
+    desc: "Places shown on the website: photo, travel details, highlights and questions.",
+    fields: [
+      {
+        name: "items",
+        label: "Destinations",
+        type: "list",
+        itemName: "destination",
+        itemLabel: "name",
+        itemMeta: "tagline",
+        items: [
+          { name: "name", label: "Place name", type: "text", half: true },
+          { name: "badge", label: "Badge on the photo (e.g. Must Visit)", type: "text", half: true },
+          { name: "tagline", label: "Tagline", type: "text" },
+          { name: "image", label: "Photo", type: "image" },
+          { name: "bestTime", label: "Best time to visit", type: "text", half: true },
+          { name: "idealStay", label: "Ideal stay", type: "text", half: true },
+          { name: "altitude", label: "Altitude", type: "text", half: true },
+          { name: "slug", label: "Web address (filled from the name if empty)", type: "text", half: true },
+          { name: "summary", label: "Short summary", type: "textarea" },
+          { name: "overview", label: "Detailed description", type: "textarea" },
+          { name: "highlights", label: "Highlights (one per line)", type: "lines" },
+          {
+            name: "faqs",
+            label: "Frequently asked questions",
+            type: "list",
+            itemName: "question",
+            itemLabel: "q",
+            items: [
+              { name: "q", label: "Question", type: "text" },
+              { name: "a", label: "Answer", type: "textarea" },
+            ],
+          },
+        ],
+      },
+    ],
+    defaults: { items: defaultDestinations },
+  },
+  vehicles: {
+    title: "Vehicles",
+    path: "/vehicles",
+    desc: "Your fleet: photo, seats, luggage, features and daily rate.",
+    fields: [
+      {
+        name: "items",
+        label: "Vehicles",
+        type: "list",
+        itemName: "vehicle",
+        itemLabel: "name",
+        itemMeta: "type",
+        items: [
+          { name: "name", label: "Vehicle name", type: "text", half: true },
+          { name: "type", label: "Model (e.g. Toyota Innova Crysta)", type: "text", half: true },
+          { name: "image", label: "Photo (a drawing is shown if there is none)", type: "image" },
+          { name: "seats", label: "Seats (e.g. 6–7 seats)", type: "text", half: true },
+          { name: "luggage", label: "Luggage (e.g. 4 bags)", type: "text", half: true },
+          { name: "price", label: "Rate per day in ₹ (empty = On request)", type: "number", half: true },
+          { name: "badge", label: "Badge on the photo (e.g. Most popular)", type: "text", half: true },
+          {
+            name: "group",
+            label: "Group size filter",
+            type: "select",
+            half: true,
+            options: [
+              { value: "small", label: "Couples (2–4)" },
+              { value: "family", label: "Family (5–8)" },
+              { value: "group", label: "Groups (9+)" },
+            ],
+          },
+          {
+            name: "art",
+            label: "Drawing used without a photo",
+            type: "select",
+            half: true,
+            options: [
+              { value: "sedan", label: "Sedan" },
+              { value: "suv", label: "SUV" },
+              { value: "van", label: "Van" },
+              { value: "bus", label: "Bus" },
+            ],
+          },
+          { name: "bestFor", label: "Best for", type: "text" },
+          { name: "features", label: "Features (one per line)", type: "lines" },
+          { name: "slug", label: "Short ID (filled from the name if empty)", type: "text" },
+        ],
+      },
+    ],
+    defaults: { items: defaultVehicles },
   },
 };

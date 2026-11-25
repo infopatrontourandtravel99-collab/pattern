@@ -2,9 +2,8 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { InstagramIcon, FacebookIcon, GoogleIcon } from "@/components/common/SocialIcons";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
-import { getSiteConfig, getPackages } from "@/lib/content";
+import { getSiteConfig, getPackages, getDestinations } from "@/lib/content";
 import { siteConfig as baseConfig } from "@/config/site";
-import { destinations } from "@/data/destinations";
 
 import { whatsappLink, generalMessage } from "@/lib/whatsapp";
 import Logo from "./Logo";
@@ -15,7 +14,7 @@ const quick = [
 ];
 
 export default async function Footer() {
-  const [siteConfig, packages] = await Promise.all([getSiteConfig(), getPackages()]);
+  const [siteConfig, packages, destinations] = await Promise.all([getSiteConfig(), getPackages(), getDestinations()]);
   const c = siteConfig.contact;
   const socials = [
     { label: "Instagram", href: siteConfig.social.instagram, Icon: InstagramIcon },

@@ -7,7 +7,7 @@ import FinalCTA from "@/components/common/FinalCTA";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
 import FleetGrid from "@/components/vehicles/FleetGrid";
 import { siteConfig } from "@/config/site";
-import { vehicles } from "@/data/vehicles";
+import { getVehicles } from "@/lib/content";
 import { images } from "@/data/images";
 import { buildMetadata } from "@/lib/seo";
 import { whatsappLink } from "@/lib/whatsapp";
@@ -33,7 +33,8 @@ const steps = [
   { Icon: CircleCheck, title: "Confirm and travel", text: "Confirm the booking and your driver meets you on time at the airport or hotel." },
 ];
 
-export default function VehiclesPage() {
+export default async function VehiclesPage() {
+  const vehicles = await getVehicles();
   const quote = whatsappLink(`Hello ${siteConfig.name}, I need a vehicle for my Kashmir trip. Please share the options and rates.`);
   return (
     <>

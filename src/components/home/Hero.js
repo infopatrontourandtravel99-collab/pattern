@@ -4,23 +4,22 @@ import SmartImage from "@/components/common/SmartImage";
 import Button from "@/components/common/Button";
 import SearchPanel from "@/components/forms/SearchPanel";
 import { images } from "@/data/images";
-import { destinations } from "@/data/destinations";
 
 import { experiences } from "@/data/experiences";
-import { getContent, getPackages } from "@/lib/content";
+import { getContent, getPackages, getDestinations } from "@/lib/content";
 import { siteConfig } from "@/config/site";
 
 const statIcons = { trips: MapPin, travelers: Users, rating: Star, hotels: Building2 };
 
-const buildGroups = (packages) => [
+const buildGroups = (destinations, packages) => [
   { id: "destinations", label: "Destinations", placeholder: "Where do you want to go?", options: destinations.map((d) => d.name) },
   { id: "packages", label: "Packages", placeholder: "Choose a package", options: packages.map((p) => p.title) },
   { id: "experiences", label: "Experiences", placeholder: "Choose an experience", options: experiences.map((e) => e.title) },
 ];
 
 export default async function Hero() {
-  const home = await getContent("home");
-  const groups = buildGroups(await getPackages());
+  const [home, destinations, packages] = await Promise.all([getContent("home"), getDestinations(), getPackages()]);
+  const groups = buildGroups(destinations, packages);
   return (
     <>
     <section className="relative isolate overflow-hidden pb-6 pt-24 text-center sm:pb-8 sm:pt-28">

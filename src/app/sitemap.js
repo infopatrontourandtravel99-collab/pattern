@@ -1,10 +1,9 @@
-import { destinations } from "@/data/destinations";
-import { getPackages } from "@/lib/content";
+import { getPackages, getDestinations } from "@/lib/content";
 import { posts } from "@/data/blog";
 import { absoluteUrl } from "@/lib/utils";
 
 export default async function sitemap() {
-  const packages = await getPackages();
+  const [packages, destinations] = await Promise.all([getPackages(), getDestinations()]);
   const now = new Date();
   const fixed = ["/", "/about", "/destinations", "/kashmir-tour-packages", "/kashmir-honeymoon-packages", "/kashmir-family-packages", "/kashmir-luxury-packages", "/experiences", "/vehicles", "/contact", "/blog", "/privacy-policy", "/terms"];
   return [

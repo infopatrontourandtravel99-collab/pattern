@@ -1,7 +1,7 @@
 import PageHero from "@/components/common/PageHero";
 import DestinationCard from "@/components/destinations/DestinationCard";
 import FinalCTA from "@/components/common/FinalCTA";
-import { destinations } from "@/data/destinations";
+import { getDestinations } from "@/lib/content";
 import { images } from "@/data/images";
 import { buildMetadata } from "@/lib/seo";
 
@@ -12,7 +12,8 @@ export const metadata = buildMetadata({
   image: images.gulmarg,
 });
 
-export default function DestinationsPage() {
+export default async function DestinationsPage() {
+  const destinations = await getDestinations();
   return (
     <>
       <PageHero title="Kashmir Destinations" subtitle="A travel guide to the valleys, lakes and meadows we love most." image={images.gulmarg} crumbs={[{ name: "Destinations", href: "/destinations" }]} />

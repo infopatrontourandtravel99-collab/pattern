@@ -83,7 +83,10 @@ export default async function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-xs sm:flex-row">
-          <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+          <div className="text-center sm:text-left">
+            <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+            <p className="mt-1 text-ivory/60">Created by <span className="font-medium text-gold">Deens Consultancy</span></p>
+          </div>
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="hover:text-gold">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gold">Terms &amp; Conditions</Link>

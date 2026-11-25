@@ -1,18 +1,12 @@
 "use client";
 import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, User, Phone, Mail, CalendarDays, MapPin, Users, MessageSquare, Send, ShieldCheck } from "lucide-react";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
 import { siteConfig } from "@/config/site";
 import { whatsappLink, packageMessage, generalMessage } from "@/lib/whatsapp";
 
-const inputBase =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/70 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25";
-const inputDense =
-  "w-full rounded-lg border border-line bg-white px-3 py-2 text-[13px] text-ink placeholder:text-muted/70 focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25";
-
 // pkg: optional package object. defaults: { destination, date, travelers } from search panel.
 export default function EnquiryForm({ pkg, defaults = {}, title = "Plan your journey", compact = false, dense = false }) {
-  const input = dense ? inputDense : inputBase;
   const [state, setState] = useState("idle"); // idle | sending | done
   const [error, setError] = useState("");
   const [values, setValues] = useState({});
@@ -56,50 +50,68 @@ export default function EnquiryForm({ pkg, defaults = {}, title = "Plan your jou
     );
   }
 
+  const input = "w-full min-w-0 rounded-xl border border-slate-200 bg-slate-50/70 py-2.5 pl-9 pr-3 text-[13px] text-ink placeholder:text-slate-400 transition focus:border-[#14284b] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#14284b]/10 sm:text-sm";
+
   return (
-    <form onSubmit={onSubmit} className={`rounded-3xl border border-line bg-white card-shadow ${dense ? "p-5" : "p-6 sm:p-8"}`} noValidate={false}>
-      <h2 className={dense ? "pr-10 font-serif text-xl font-semibold" : "font-serif text-2xl"}>{title}</h2>
-      {pkg && <p className="mt-1 text-sm text-muted">Enquiring about: <strong className="text-ink">{pkg.title}</strong> ({pkg.duration})</p>}
-      <div className={`grid sm:grid-cols-2 ${dense ? "mt-4 gap-2.5" : "mt-6 gap-4"}`}>
-        <label className="text-sm">
-          <span className={`block font-medium ${dense ? "mb-1 text-xs" : "mb-1.5"}`}>Full name</span>
-          <input name="name" required autoComplete="name" className={input} placeholder="Your name" />
-        </label>
-        <label className="text-sm">
-          <span className={`block font-medium ${dense ? "mb-1 text-xs" : "mb-1.5"}`}>Phone / WhatsApp</span>
-          <input name="phone" required type="tel" autoComplete="tel" className={input} placeholder="+91 …" />
-        </label>
-        <label className="text-sm">
-          <span className={`block font-medium ${dense ? "mb-1 text-xs" : "mb-1.5"}`}>Email</span>
-          <input name="email" type="email" autoComplete="email" className={input} placeholder="you@example.com" />
-        </label>
-        <label className="text-sm">
-          <span className={`block font-medium ${dense ? "mb-1 text-xs" : "mb-1.5"}`}>Travel date</span>
-          <input name="date" type="date" defaultValue={defaults.date || ""} className={input} />
-        </label>
-        {!pkg && (
-          <label className="text-sm">
-            <span className={`block font-medium ${dense ? "mb-1 text-xs" : "mb-1.5"}`}>Destination</span>
-            <input name="destination" defaultValue={defaults.destination || ""} className={input} placeholder="e.g. Gulmarg, Pahalgam" />
-          </label>
-        )}
-        <label className="text-sm">
-          <span className={`block font-medium ${dense ? "mb-1 text-xs" : "mb-1.5"}`}>Travelers</span>
-          <input name="travelers" type="number" min="1" max="50" defaultValue={defaults.travelers || 2} className={input} />
-        </label>
-        {!compact && (
-          <label className="text-sm sm:col-span-2">
-            <span className={`block font-medium ${dense ? "mb-1 text-xs" : "mb-1.5"}`}>Message</span>
-            <textarea name="message" rows={dense ? 2 : 4} className={input} placeholder="Tell us about your preferences, budget or special occasions" />
-          </label>
-        )}
-        <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+    <form onSubmit={onSubmit} className="overflow-hidden rounded-3xl border border-line bg-white shadow-[0_10px_40px_-12px_rgba(20,40,75,0.25)]">
+      <div className="bg-gradient-to-br from-[#14284b] to-[#2a4a80] px-5 py-4 text-white sm:px-7 sm:py-5">
+        <h2 className="pr-10 text-lg font-semibold leading-tight sm:text-xl">{title}</h2>
+        <p className="mt-1 text-xs text-white/75 sm:text-[13px]">
+          {pkg ? <>Enquiring about <strong className="text-white">{pkg.title}</strong> ({pkg.duration})</> : "Free quote within a few hours. No obligation."}
+        </p>
       </div>
-      {error && <p className="mt-3 text-sm text-red-700" role="alert">{error}</p>}
-      <button type="submit" disabled={state === "sending"} className={`inline-flex w-full items-center justify-center rounded-full bg-ink px-6 text-sm font-medium text-ivory transition-colors hover:bg-black disabled:opacity-60 ${dense ? "mt-4 py-2.5" : "mt-6 py-3.5"}`}>
-        {state === "sending" ? "Sending…" : "Send Enquiry"}
-      </button>
-      <p className={`text-center text-xs text-muted ${dense ? "mt-2" : "mt-3"}`}>We reply within a few hours. No spam, ever.</p>
+
+      <div className="px-5 pb-5 pt-4 sm:px-7 sm:pb-7 sm:pt-5">
+        <div className="grid grid-cols-2 gap-x-2.5 gap-y-3 sm:gap-x-4 sm:gap-y-4">
+          <Field label="Full name" Icon={User}>
+            <input name="name" required autoComplete="name" className={input} placeholder="Your name" />
+          </Field>
+          <Field label="Phone / WhatsApp" Icon={Phone}>
+            <input name="phone" required type="tel" autoComplete="tel" className={input} placeholder="+91 …" />
+          </Field>
+          <Field label="Email" Icon={Mail}>
+            <input name="email" type="email" autoComplete="email" className={input} placeholder="you@example.com" />
+          </Field>
+          <Field label="Travel date" Icon={CalendarDays}>
+            <input name="date" type="date" defaultValue={defaults.date || ""} className={input} />
+          </Field>
+          {!pkg && (
+            <Field label="Destination" Icon={MapPin}>
+              <input name="destination" defaultValue={defaults.destination || ""} className={input} placeholder="e.g. Gulmarg" />
+            </Field>
+          )}
+          <Field label="Travelers" Icon={Users} className={pkg ? "col-span-2 sm:col-span-1" : ""}>
+            <input name="travelers" type="number" min="1" max="50" defaultValue={defaults.travelers || 2} className={input} />
+          </Field>
+          {!compact && (
+            <Field label="Message" Icon={MessageSquare} className="col-span-2" top>
+              <textarea name="message" rows={dense ? 2 : 3} className={input + " resize-none"} placeholder="Preferences, budget or special occasions" />
+            </Field>
+          )}
+          <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+        </div>
+
+        {error && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700 sm:text-sm" role="alert">{error}</p>}
+
+        <button type="submit" disabled={state === "sending"} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#14284b] py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#0d1d38] hover:shadow-lg disabled:opacity-60">
+          <Send size={16} /> {state === "sending" ? "Sending…" : "Send Enquiry"}
+        </button>
+        <p className="mt-2.5 flex items-center justify-center gap-1.5 text-[11px] text-muted sm:text-xs">
+          <ShieldCheck size={13} className="text-[#1f9d57]" /> We reply within a few hours. No spam, ever.
+        </p>
+      </div>
     </form>
+  );
+}
+
+function Field({ label, Icon, children, className = "", top = false }) {
+  return (
+    <label className={`block min-w-0 ${className}`}>
+      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate-500 sm:text-xs">{label}</span>
+      <span className="relative block">
+        <Icon size={15} className={`pointer-events-none absolute left-3 text-slate-400 ${top ? "top-3" : "top-1/2 -translate-y-1/2"}`} />
+        {children}
+      </span>
+    </label>
   );
 }

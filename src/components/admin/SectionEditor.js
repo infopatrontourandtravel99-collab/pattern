@@ -3,6 +3,24 @@ import { useEffect, useState } from "react";
 
 const inputCls = "mt-1 w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm outline-none focus:border-[#14284b]";
 
+// Shrinks a photo in the browser (max 1600px, WebP) so it uses far less database space.
+async function compress(file) {
+  if (!file.type.startsWith("image/") || file.type === "image/gif") return file;
+  try {
+    const bmp = await createImageBitmap(file);
+    const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const w = Math.round(bmp.width * scale), h = Math.round(bmp.height * scale);
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    canvas.getContext("2d").drawImage(bmp, 0, 0, w, h);
+    const blob = await new Promise((r) => canvas.toBlob(r, "image/webp", 0.8));
+    return blob && blob.size < file.size ? new File([blob], file.name.replace(/.w+$/, "") + ".webp", { type: "image/webp" }) : file;
+  } catch {
+    return file;
+  }
+}
+
 function ImageField({ value, onChange }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -13,7 +31,7 @@ function ImageField({ value, onChange }) {
     setBusy(true);
     setErr("");
     const fd = new FormData();
-    fd.append("file", file);
+    fd.append("file", await compress(file));
     const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
     const j = await res.json().catch(() => ({}));
     setBusy(false);

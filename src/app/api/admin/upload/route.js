@@ -4,7 +4,7 @@ import { isAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/mongo";
 
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
-const MAX = 5 * 1024 * 1024;
+const MAX = 2 * 1024 * 1024;
 
 export async function POST(req) {
   if (!(await isAdmin())) return NextResponse.json({ error: "Not logged in" }, { status: 401 });
@@ -12,7 +12,7 @@ export async function POST(req) {
   const file = form?.get("file");
   if (!file || typeof file === "string") return NextResponse.json({ error: "No file" }, { status: 400 });
   if (!ALLOWED.includes(file.type)) return NextResponse.json({ error: "Only JPG, PNG, WEBP, GIF or AVIF images" }, { status: 400 });
-  if (file.size > MAX) return NextResponse.json({ error: "Image must be under 5 MB" }, { status: 400 });
+  if (file.size > MAX) return NextResponse.json({ error: "Image must be under 2 MB (it is auto-shrunk, so try a smaller photo)" }, { status: 400 });
   const db = await getDb();
   if (!db) return NextResponse.json({ error: "Database is not configured" }, { status: 500 });
   const buf = Buffer.from(await file.arrayBuffer());

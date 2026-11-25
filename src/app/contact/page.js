@@ -36,7 +36,7 @@ export default async function ContactPage({ searchParams }) {
       <section className="py-10 sm:py-14">
         <div className="container-x grid gap-10 lg:grid-cols-[1.4fr_1fr]">
           <div id="enquiry" className="scroll-mt-28">
-            <EnquiryForm defaults={defaults} title="Send us an enquiry" />
+            <EnquiryForm defaults={defaults} title="Send us an enquiry" dense />
           </div>
           <div className="space-y-5">
             <div className="rounded-3xl border border-line bg-white p-7 card-shadow">

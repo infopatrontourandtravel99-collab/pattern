@@ -10,12 +10,15 @@ import { images } from "@/data/images";
 import { siteConfig } from "@/config/site";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
+export async function generateMetadata() {
+  const about = await getContent("about");
+  return buildMetadata({
   title: "About Us – Local Kashmir Travel Experts",
   description: `${siteConfig.name} is a Ganderbal-based travel company designing private, thoughtfully paced Kashmir holidays with local knowledge and transparent pricing.`,
   path: "/about",
-  image: images.about,
-});
+  image: about.heroImage || images.about,
+  });
+}
 
 export default async function AboutPage() {
   const about = await getContent("about");

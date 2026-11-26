@@ -14,7 +14,7 @@ export async function POST(req) {
   if (!ALLOWED.includes(file.type)) return NextResponse.json({ error: "Only JPG, PNG, WEBP, GIF or AVIF images" }, { status: 400 });
   if (file.size > MAX) return NextResponse.json({ error: "Image must be under 2 MB (it is auto-shrunk, so try a smaller photo)" }, { status: 400 });
   const db = await getDb();
-  if (!db) return NextResponse.json({ error: "Database is not configured" }, { status: 500 });
+  if (!db) return NextResponse.json({ error: "Not uploaded: the website cannot connect to the database." }, { status: 500 });
   const buf = Buffer.from(await file.arrayBuffer());
   const { insertedId } = await db.collection("files").insertOne({ type: file.type, name: file.name, data: new Binary(buf), createdAt: new Date() });
   return NextResponse.json({ url: `/api/files/${insertedId}` });

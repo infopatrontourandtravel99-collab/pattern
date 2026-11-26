@@ -4,33 +4,34 @@ import PageHero from "@/components/common/PageHero";
 import Button from "@/components/common/Button";
 import JsonLd from "@/components/seo/JsonLd";
 import FinalCTA from "@/components/common/FinalCTA";
-import { posts, getPost } from "@/data/blog";
+import { getPosts, getPostBySlug, getPhotos } from "@/lib/content";
 import { buildMetadata, articleSchema } from "@/lib/seo";
 
-export function generateStaticParams() {
-  return posts.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getPosts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const p = getPost(slug);
+  const p = await getPostBySlug(slug);
   if (!p) return {};
   return { ...buildMetadata({ title: p.title, description: p.excerpt, path: `/blog/${p.slug}`, image: p.image, type: "article" }) };
 }
 
 export default async function BlogPost({ params }) {
   const { slug } = await params;
-  const p = getPost(slug);
+  const p = await getPostBySlug(slug);
   if (!p) notFound();
-  const more = posts.filter((x) => x.slug !== p.slug);
+  const { logo } = await getPhotos();
+  const more = (await getPosts()).filter((x) => x.slug !== p.slug);
   return (
     <>
-      <JsonLd data={articleSchema(p)} />
+      <JsonLd data={articleSchema(p, logo)} />
       <PageHero title={p.title} subtitle={`${new Date(p.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} · ${p.readTime}`} image={p.image} crumbs={[{ name: "Blog", href: "/blog" }, { name: p.title, href: `/blog/${p.slug}` }]} />
       <article className="container-x max-w-3xl py-16">
         <p className="text-lg leading-relaxed text-muted">{p.excerpt}</p>
-        {p.body.map((s) => (
-          <section key={s.h} className="mt-10">
+        {p.body.map((s, i) => (
+          <section key={i} className="mt-10">
             <h2 className="font-serif text-2xl font-semibold">{s.h}</h2>
             <p className="mt-3 leading-relaxed text-muted">{s.p}</p>
           </section>

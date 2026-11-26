@@ -3,17 +3,18 @@ import WhatsAppIcon from "@/components/common/WhatsAppIcon";
 import PageHero from "@/components/common/PageHero";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import Button from "@/components/common/Button";
-import { getSiteConfig } from "@/lib/content";
-import { images } from "@/data/images";
+import { getSiteConfig, getPhotos } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import { whatsappLink, generalMessage } from "@/lib/whatsapp";
 
-export const metadata = buildMetadata({
-  title: "Contact Us – Plan Your Kashmir Trip",
-  description: "Contact Patron Tour And Travels on WhatsApp, phone or email to plan your Kashmir trip. Get a free itinerary and quote within hours.",
-  path: "/contact",
-  image: images.lakes,
-});
+export async function generateMetadata() {
+  return buildMetadata({
+    title: "Contact Us – Plan Your Kashmir Trip",
+    description: "Contact Patron Tour And Travels on WhatsApp, phone or email to plan your Kashmir trip. Get a free itinerary and quote within hours.",
+    path: "/contact",
+    image: (await getPhotos()).contactBanner,
+  });
+}
 
 export default async function ContactPage({ searchParams }) {
   const sp = await searchParams;
@@ -22,7 +23,7 @@ export default async function ContactPage({ searchParams }) {
     date: typeof sp?.date === "string" ? sp.date : "",
     travelers: typeof sp?.travelers === "string" ? sp.travelers : "",
   };
-  const siteConfig = await getSiteConfig();
+  const [siteConfig, photos] = await Promise.all([getSiteConfig(), getPhotos()]);
   const c = siteConfig.contact;
   const rows = [
     ...c.phones.map((p, i) => ({ Icon: Phone, label: i === 0 ? "Call us" : "Call us (alternate)", value: p.display, href: `tel:${p.href}` })),
@@ -32,7 +33,7 @@ export default async function ContactPage({ searchParams }) {
   ];
   return (
     <>
-      <PageHero title="Contact Us" subtitle="Tell us about your dream Kashmir trip and we will reply with a tailored itinerary." image={images.lakes} crumbs={[{ name: "Contact", href: "/contact" }]} />
+      <PageHero title="Contact Us" subtitle="Tell us about your dream Kashmir trip and we will reply with a tailored itinerary." image={photos.contactBanner} crumbs={[{ name: "Contact", href: "/contact" }]} />
       <section className="py-10 sm:py-14">
         <div className="container-x grid gap-10 lg:grid-cols-[1.4fr_1fr]">
           <div id="enquiry" className="scroll-mt-28">

@@ -17,21 +17,23 @@ async function countLabel(key, section) {
 }
 
 export default async function Dashboard() {
-  const [db, sections] = await Promise.all([
+  const [db, home, sections] = await Promise.all([
     getDb(),
+    getContent("home"),
     Promise.all(Object.entries(adminSections).map(async ([key, s]) => ({ key, ...s, count: await countLabel(key, s) }))),
   ]);
+  const banner = home.heroImage || images.hero;
   return (
     <div className="mx-auto max-w-4xl">
       <div className="relative isolate overflow-hidden rounded-3xl bg-[#14284b] px-6 py-10 text-white sm:px-10 sm:py-14">
-        <Image src={images.hero} alt="" fill priority sizes="(min-width: 768px) 56rem, 100vw" className="-z-10 object-cover" />
+        <Image src={banner} alt="" fill priority sizes="(min-width: 768px) 56rem, 100vw" unoptimized={banner.startsWith("/api/files/")} className="-z-10 object-cover" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#14284b] via-[#14284b]/85 to-[#14284b]/20" />
         <h1 className="max-w-md text-2xl font-bold sm:text-3xl">{siteConfig.name}</h1>
         <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/85">Choose a section to edit. Your changes appear on the website after you save.</p>
       </div>
       {!db && (
         <p className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
-          Database not connected. Add MONGODB_URI to .env.local and restart the server. Until then you can look around, but saving will not work.
+          The website cannot connect to the database, so saving and photo uploads will not work. Check MONGODB_URI and the Network Access list in MongoDB Atlas.
         </p>
       )}
       <ul className="mt-5 grid gap-3 sm:grid-cols-2">

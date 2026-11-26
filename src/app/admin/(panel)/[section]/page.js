@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import { adminSections } from "@/lib/adminSchema";
 import { getContent } from "@/lib/content";
+import { getDb } from "@/lib/mongo";
 import SectionEditor from "@/components/admin/SectionEditor";
 import SectionIcon from "@/components/admin/SectionIcon";
 
@@ -10,7 +11,9 @@ export default async function SectionPage({ params }) {
   const { section } = await params;
   const def = adminSections[section];
   if (!def) notFound();
-  const data = await getContent(section);
+  const [db, saved] = await Promise.all([getDb(), getContent(section)]);
+  // Fields added after the last save start with their built-in value.
+  const data = { ...def.defaults, ...saved };
   return (
     <div className="mx-auto max-w-3xl">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -27,6 +30,11 @@ export default async function SectionPage({ params }) {
           <ExternalLink size={16} /> View on website
         </Link>
       </div>
+      {!db && (
+        <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          The website cannot connect to the database. What you see below is the built-in content, and saving or uploading will not work. Fix the connection, then reload this page.
+        </p>
+      )}
       <SectionEditor key={section} sectionKey={section} fields={def.fields} initial={data} />
     </div>
   );

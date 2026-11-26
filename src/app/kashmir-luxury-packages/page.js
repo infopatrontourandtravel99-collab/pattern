@@ -1,23 +1,25 @@
 import PackageListPage from "@/components/packages/PackageListPage";
-import { packagesByTag } from "@/lib/content";
-import { images } from "@/data/images";
+import { packagesByTag, getPhotos } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 
 const path = "/kashmir-luxury-packages";
-export const metadata = buildMetadata({
-  title: "Kashmir Luxury Tour Packages – 5-Star Stays & Private Chauffeur",
-  description: "Luxury Kashmir tour packages with 5-star hotels, deluxe houseboat nights, private chauffeur and a dedicated trip manager.",
-  path,
-  image: images.houseboat,
-});
+export async function generateMetadata() {
+  return buildMetadata({
+    title: "Kashmir Luxury Tour Packages – 5-Star Stays & Private Chauffeur",
+    description: "Luxury Kashmir tour packages with 5-star hotels, deluxe houseboat nights, private chauffeur and a dedicated trip manager.",
+    path,
+    image: (await getPhotos()).luxuryBanner,
+  });
+}
 
 export default async function Page() {
+  const photos = await getPhotos();
   const items = await packagesByTag("luxury");
   return (
     <PackageListPage
       h1="Kashmir Luxury Tour Packages"
       subtitle="Refined stays, private transport and unhurried experiences across the Valley."
-      image={images.houseboat}
+      image={photos.luxuryBanner}
       crumbName="Luxury Packages"
       path={path}
       currentHref={path}

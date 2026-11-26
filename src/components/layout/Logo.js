@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 
-export default function Logo({ light = false }) {
-  const { src, text, sub } = siteConfig.logo;
+export default function Logo({ light = false, src = siteConfig.logo.src }) {
+  const { text, sub } = siteConfig.logo;
   return (
     <Link href="/" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
       <span className={`relative block h-10 w-10 shrink-0 sm:h-12 sm:w-12 overflow-hidden ${light ? "rounded-xl bg-white" : ""}`}>
-        <Image src={src} alt={`${siteConfig.name} logo`} fill sizes="48px" priority className="object-contain" />
+        <Image src={src} alt={`${siteConfig.name} logo`} fill sizes="48px" priority unoptimized={src.startsWith("/api/files/")} className="object-contain" />
       </span>
       <span className="leading-tight">
         <span className={`block font-serif text-base font-bold sm:text-xl ${light ? "text-white" : "text-ink"}`}>{text}</span>

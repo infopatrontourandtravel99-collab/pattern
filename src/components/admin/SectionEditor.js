@@ -213,6 +213,7 @@ function Field({ field, value, onChange }) {
         {field.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
     );
+  if (field.type === "date") return <input type="date" className={inputCls} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
   if (field.type === "image") return <ImageField value={value} onChange={onChange} />;
   if (field.type === "list") return <ListField field={field} value={value} onChange={onChange} />;
   if (field.type === "textarea")

@@ -3,11 +3,38 @@ import { images } from "@/data/images";
 import { packages as defaultPackages } from "@/data/packages";
 import { destinations as defaultDestinations } from "@/data/destinations";
 import { vehicles as defaultVehicles } from "@/data/vehicles";
+import { categories as defaultCategories } from "@/data/categories";
+import { experiences as defaultExperiences } from "@/data/experiences";
+import { posts as defaultPosts } from "@/data/blog";
+import { siteConfig } from "@/config/site";
+
+// Logo and page banners: [field name, label, built-in photo].
+const sitePhotos = [
+  ["logo", "Logo (header, footer and browser tab)", siteConfig.logo.src],
+  ["packagesBanner", "Tour Packages page banner", images.hero],
+  ["honeymoonBanner", "Honeymoon Packages page banner", images.honeymoon],
+  ["familyBanner", "Family Packages page banner", images.gardens],
+  ["luxuryBanner", "Luxury Packages page banner", images.houseboat],
+  ["destinationsBanner", "Destinations page banner", images.gulmarg],
+  ["experiencesBanner", "Experiences page banner", images.shikara],
+  ["vehiclesBanner", "Vehicles page banner", images.pahalgam],
+  ["blogBanner", "Blog page banner", images.mountains],
+  ["contactBanner", "Contact page banner", images.lakes],
+  ["legalBanner", "Privacy Policy and Terms banner", images.mountains],
+  ["ctaImage", "Background of the 'Plan Your Trip' box (bottom of pages)", images.lakes],
+];
 
 // Describes every editable section of the admin panel.
 // field types: text | textarea | number | image | select | csv | lines | list (items = nested fields)
 // half: true puts two short fields side by side. path = public page that shows the section.
 export const adminSections = {
+  photos: {
+    title: "Logo & banners",
+    path: "/",
+    desc: "Logo and the big photo on top of each page. Home and About banners are in their own sections.",
+    fields: sitePhotos.map(([name, label]) => ({ name, label, type: "image" })),
+    defaults: Object.fromEntries(sitePhotos.map(([name, , src]) => [name, src])),
+  },
   settings: {
     title: "Contact & Social",
     path: "/contact",
@@ -113,6 +140,17 @@ export const adminSections = {
           { name: "price", label: "Starting price per person (₹)", type: "number", half: true },
           { name: "route", label: "Route (places separated by · )", type: "text" },
           { name: "image", label: "Main photo", type: "image" },
+          {
+            name: "gallery",
+            label: "More photos on the package page (first 4 are shown)",
+            type: "list",
+            itemName: "photo",
+            itemLabel: "caption",
+            items: [
+              { name: "image", label: "Photo", type: "image" },
+              { name: "caption", label: "Caption", type: "text" },
+            ],
+          },
           { name: "description", label: "Short description", type: "textarea" },
           { name: "tags", label: "Show in lists (comma separated: family, honeymoon, luxury)", type: "csv" },
           { name: "category", label: "Labels (comma separated: Family, Couples, Adventure…)", type: "csv" },
@@ -226,5 +264,82 @@ export const adminSections = {
       },
     ],
     defaults: { items: defaultVehicles },
+  },
+  categories: {
+    title: "Home cards",
+    path: "/",
+    desc: "The 'Explore by category' cards on the home page.",
+    fields: [
+      {
+        name: "items",
+        label: "Cards",
+        type: "list",
+        itemName: "card",
+        itemLabel: "title",
+        itemMeta: "sub",
+        items: [
+          { name: "title", label: "Title", type: "text", half: true },
+          { name: "sub", label: "Small text", type: "text", half: true },
+          { name: "image", label: "Photo", type: "image" },
+          { name: "href", label: "Page it opens (e.g. /destinations/gulmarg)", type: "text" },
+        ],
+      },
+    ],
+    defaults: { items: defaultCategories },
+  },
+  experiences: {
+    title: "Experiences",
+    path: "/experiences",
+    desc: "Experience cards on the home page and the Experiences page.",
+    fields: [
+      {
+        name: "items",
+        label: "Experiences",
+        type: "list",
+        itemName: "experience",
+        itemLabel: "title",
+        items: [
+          { name: "title", label: "Title", type: "text" },
+          { name: "image", label: "Photo", type: "image" },
+          { name: "text", label: "Description", type: "textarea" },
+        ],
+      },
+    ],
+    defaults: { items: defaultExperiences },
+  },
+  blog: {
+    title: "Blog",
+    path: "/blog",
+    desc: "Add, edit or delete blog articles and their photos.",
+    fields: [
+      {
+        name: "items",
+        label: "Articles",
+        type: "list",
+        itemName: "article",
+        itemLabel: "title",
+        itemMeta: "date",
+        items: [
+          { name: "title", label: "Title", type: "text" },
+          { name: "image", label: "Photo", type: "image" },
+          { name: "date", label: "Date", type: "date", half: true },
+          { name: "readTime", label: "Reading time (e.g. 5 min read)", type: "text", half: true },
+          { name: "excerpt", label: "Short introduction", type: "textarea" },
+          {
+            name: "body",
+            label: "Article parts",
+            type: "list",
+            itemName: "part",
+            itemLabel: "h",
+            items: [
+              { name: "h", label: "Heading", type: "text" },
+              { name: "p", label: "Text", type: "textarea" },
+            ],
+          },
+          { name: "slug", label: "Web address (filled from the title if empty)", type: "text" },
+        ],
+      },
+    ],
+    defaults: { items: defaultPosts },
   },
 };

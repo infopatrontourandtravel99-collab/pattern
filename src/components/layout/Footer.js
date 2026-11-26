@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { InstagramIcon, FacebookIcon, GoogleIcon } from "@/components/common/SocialIcons";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
-import { getSiteConfig, getPackages, getDestinations } from "@/lib/content";
+import { getSiteConfig, getPackages, getDestinations, getPhotos } from "@/lib/content";
 import { siteConfig as baseConfig } from "@/config/site";
 
 import { whatsappLink, generalMessage } from "@/lib/whatsapp";
@@ -14,7 +14,7 @@ const quick = [
 ];
 
 export default async function Footer() {
-  const [siteConfig, packages, destinations] = await Promise.all([getSiteConfig(), getPackages(), getDestinations()]);
+  const [siteConfig, packages, destinations, photos] = await Promise.all([getSiteConfig(), getPackages(), getDestinations(), getPhotos()]);
   const c = siteConfig.contact;
   const socials = [
     { label: "Instagram", href: siteConfig.social.instagram, Icon: InstagramIcon },
@@ -25,7 +25,7 @@ export default async function Footer() {
     <footer className="mt-10 bg-ink text-ivory/80">
       <div className="container-x grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.3fr]">
         <div>
-          <Logo light />
+          <Logo light src={photos.logo} />
           <p className="mt-5 max-w-xs text-sm leading-relaxed">
             {siteConfig.name} designs private, thoughtfully paced journeys through the valleys, lakes and mountains of Kashmir.
           </p>

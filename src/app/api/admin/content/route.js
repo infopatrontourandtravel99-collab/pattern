@@ -12,9 +12,10 @@ const slugLists = {
   packages: {
     from: "title",
     fallback: "package",
-    clean: (p) => ({ price: Number(p.price) || 0, tags: arr(p.tags), category: arr(p.category), inclusions: arr(p.inclusions), exclusions: arr(p.exclusions), itinerary: arr(p.itinerary) }),
+    clean: (p) => ({ price: Number(p.price) || 0, tags: arr(p.tags), category: arr(p.category), inclusions: arr(p.inclusions), exclusions: arr(p.exclusions), itinerary: arr(p.itinerary), gallery: arr(p.gallery) }),
   },
   destinations: { from: "name", fallback: "destination", clean: (d) => ({ highlights: arr(d.highlights), faqs: arr(d.faqs) }) },
+  blog: { from: "title", fallback: "article", clean: (p) => ({ body: arr(p.body) }) },
   vehicles: { from: "name", fallback: "vehicle", clean: (v) => ({ price: Number(v.price) || "", features: arr(v.features) }) },
 };
 

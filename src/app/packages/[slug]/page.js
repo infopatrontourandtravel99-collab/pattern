@@ -10,8 +10,7 @@ import Itinerary from "@/components/packages/Itinerary";
 import EnquiryForm from "@/components/forms/EnquiryForm";
 import JsonLd from "@/components/seo/JsonLd";
 import { siteConfig } from "@/config/site";
-import { images } from "@/data/images";
-import { getPackages, getPackageBySlug, getDestinations } from "@/lib/content";
+import { getPackages, getPackageBySlug, getDestinations, getExperiences } from "@/lib/content";
 import { buildMetadata, packageSchema, faqSchema } from "@/lib/seo";
 import { formatPrice } from "@/lib/utils";
 import { whatsappLink, packageMessage } from "@/lib/whatsapp";
@@ -54,17 +53,18 @@ export default async function PackagePage({ params }) {
 
   const places = p.route.split(" · ");
   const others = (await getPackages()).filter((x) => x.slug !== p.slug).slice(0, 3);
-  const destinations = await getDestinations();
+  const [destinations, experiences] = await Promise.all([getDestinations(), getExperiences()]);
 
-  // Gallery: main package photo + photos of the places on the route, padded with extras.
+  // Gallery: main photo, the package's own extra photos, then places on the route, padded with other site photos.
   const placeShots = places
     .map((pl) => destinations.find((d) => d.name.startsWith(pl)))
     .filter(Boolean)
     .map((d) => ({ src: d.image, alt: `${d.name}, Kashmir – ${p.title}` }));
-  const extras = [...new Set(Object.values(images))].map((src) => ({ src, alt: `${p.title} – Kashmir scenery` }));
+  const own = (p.gallery ?? []).filter((g) => g.image).map((g) => ({ src: g.image, alt: g.caption || p.title }));
+  const extras = [...destinations, ...experiences].map((x) => ({ src: x.image, alt: `${p.title} – Kashmir scenery` }));
   const seen = new Set([p.image]);
   const gallery = [{ src: p.image, alt: `${p.title} – ${p.route}` }];
-  for (const g of [...placeShots, ...extras]) {
+  for (const g of [...own, ...placeShots, ...extras]) {
     if (gallery.length >= 5) break;
     if (!seen.has(g.src)) { seen.add(g.src); gallery.push(g); }
   }

@@ -3,13 +3,14 @@ import { slider4, slide } from "@/lib/slider";
 import SmartImage from "@/components/common/SmartImage";
 import Reveal from "@/components/common/Reveal";
 import Button from "@/components/common/Button";
-import { experiences } from "@/data/experiences";
+import { getExperiences } from "@/lib/content";
 
-export function ExperienceGrid({ items = experiences }) {
+export async function ExperienceGrid() {
+  const items = await getExperiences();
   return (
     <div className={slider4}>
       {items.map((e, i) => (
-        <Reveal key={e.title} delay={(i % 4) * 0.06} className={slide}>
+        <Reveal key={i} delay={(i % 4) * 0.06} className={slide}>
           <article className="lift group overflow-hidden rounded-[1.5rem] border border-line bg-white card-shadow">
             <div className="relative aspect-[16/10] overflow-hidden">
               <SmartImage src={e.image} alt={`${e.title} in Kashmir`} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="transition-transform duration-700 group-hover:scale-105" />

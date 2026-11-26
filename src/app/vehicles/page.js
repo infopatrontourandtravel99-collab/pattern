@@ -7,18 +7,19 @@ import FinalCTA from "@/components/common/FinalCTA";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
 import FleetGrid from "@/components/vehicles/FleetGrid";
 import { siteConfig } from "@/config/site";
-import { getVehicles } from "@/lib/content";
-import { images } from "@/data/images";
+import { getVehicles, getPhotos } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import { whatsappLink } from "@/lib/whatsapp";
 import { slider4, slider3, slide } from "@/lib/slider";
 
-export const metadata = buildMetadata({
-  title: "Kashmir Taxi & Cab Service – Sedan, Innova, Tempo Traveller on Rent",
-  description: "Book clean, air-conditioned vehicles with experienced local drivers for Srinagar, Gulmarg, Pahalgam and Sonamarg: sedan, Innova, luxury SUV, Tempo Traveller and mini coach.",
-  path: "/vehicles",
-  image: images.pahalgam,
-});
+export async function generateMetadata() {
+  return buildMetadata({
+    title: "Kashmir Taxi & Cab Service – Sedan, Innova, Tempo Traveller on Rent",
+    description: "Book clean, air-conditioned vehicles with experienced local drivers for Srinagar, Gulmarg, Pahalgam and Sonamarg: sedan, Innova, luxury SUV, Tempo Traveller and mini coach.",
+    path: "/vehicles",
+    image: (await getPhotos()).vehiclesBanner,
+  });
+}
 
 const reasons = [
   { Icon: UserCheck, title: "Experienced local drivers", text: "Drivers who know the mountain roads, weather and the best stops." },
@@ -34,14 +35,14 @@ const steps = [
 ];
 
 export default async function VehiclesPage() {
-  const vehicles = await getVehicles();
+  const [vehicles, photos] = await Promise.all([getVehicles(), getPhotos()]);
   const quote = whatsappLink(`Hello ${siteConfig.name}, I need a vehicle for my Kashmir trip. Please share the options and rates.`);
   return (
     <>
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-[#14284b] pb-14 pt-24 text-white sm:pb-20 sm:pt-28">
         <div className="absolute inset-0 -z-10">
-          <SmartImage src={images.pahalgam} alt="" sizes="100vw" priority />
+          <SmartImage src={photos.vehiclesBanner} alt="" sizes="100vw" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-[#14284b]/95 via-[#14284b]/80 to-[#14284b]/40" />
         </div>
         <div className="container-x">

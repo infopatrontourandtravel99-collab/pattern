@@ -1,4 +1,4 @@
-import { CarFront, House, Info, LayoutDashboard, Luggage, MapPin, Phone, UsersRound } from "lucide-react";
+import { CarFront, House, Images, Info, LayoutDashboard, LayoutGrid, Luggage, MapPin, Newspaper, Phone, Sparkles, UsersRound } from "lucide-react";
 
 const icons = {
   dashboard: LayoutDashboard,
@@ -9,6 +9,10 @@ const icons = {
   packages: Luggage,
   destinations: MapPin,
   vehicles: CarFront,
+  photos: Images,
+  categories: LayoutGrid,
+  experiences: Sparkles,
+  blog: Newspaper,
 };
 
 export default function SectionIcon({ name, ...props }) {

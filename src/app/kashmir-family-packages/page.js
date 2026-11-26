@@ -1,23 +1,25 @@
 import PackageListPage from "@/components/packages/PackageListPage";
-import { packagesByTag } from "@/lib/content";
-import { images } from "@/data/images";
+import { packagesByTag, getPhotos } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 
 const path = "/kashmir-family-packages";
-export const metadata = buildMetadata({
-  title: "Kashmir Family Tour Packages – Comfortable Holidays with Kids",
-  description: "Family-friendly Kashmir tour packages with shorter drives, spacious vehicles and verified hotels across Srinagar, Pahalgam, Gulmarg and Sonamarg.",
-  path,
-  image: images.gardens,
-});
+export async function generateMetadata() {
+  return buildMetadata({
+    title: "Kashmir Family Tour Packages – Comfortable Holidays with Kids",
+    description: "Family-friendly Kashmir tour packages with shorter drives, spacious vehicles and verified hotels across Srinagar, Pahalgam, Gulmarg and Sonamarg.",
+    path,
+    image: (await getPhotos()).familyBanner,
+  });
+}
 
 export default async function Page() {
+  const photos = await getPhotos();
   const items = await packagesByTag("family");
   return (
     <PackageListPage
       h1="Kashmir Family Tour Packages"
       subtitle="Comfortable, flexible holidays designed for children, parents and grandparents alike."
-      image={images.gardens}
+      image={photos.familyBanner}
       crumbName="Family Packages"
       path={path}
       currentHref={path}

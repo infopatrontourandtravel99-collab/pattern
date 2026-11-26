@@ -1,17 +1,17 @@
-import {  } from "lucide-react";
 import WhatsAppIcon from "@/components/common/WhatsAppIcon";
 import SmartImage from "@/components/common/SmartImage";
 import Button from "@/components/common/Button";
-import { images } from "@/data/images";
+import { getPhotos } from "@/lib/content";
 import { whatsappLink, generalMessage } from "@/lib/whatsapp";
 
-export default function FinalCTA({ heading = "Ready to Discover the Magic of Kashmir?", text = "Let us create a beautiful Kashmir journey designed around your travel style." }) {
+export default async function FinalCTA({ heading = "Ready to Discover the Magic of Kashmir?", text = "Let us create a beautiful Kashmir journey designed around your travel style." }) {
+  const { ctaImage } = await getPhotos();
   return (
     <section className="py-10 sm:py-14">
       <div className="container-x">
         <div className="relative isolate overflow-hidden rounded-[2.25rem] bg-ink px-6 py-16 text-center text-white sm:px-12 sm:py-24">
           <div className="absolute inset-0 -z-10">
-            <SmartImage src={images.lakes} alt="" sizes="100vw" />
+            <SmartImage src={ctaImage} alt="" sizes="100vw" />
             <div className="absolute inset-0 bg-ink/65" />
           </div>
           <h2 className="mx-auto max-w-3xl font-serif text-2xl font-bold leading-tight sm:text-4xl">{heading}</h2>

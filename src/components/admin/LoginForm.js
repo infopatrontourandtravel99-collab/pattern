@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
-export default function LoginForm() {
+export default function LoginForm({ logo = siteConfig.logo.src }) {
   const router = useRouter();
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
@@ -32,7 +32,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={submit} className="w-full max-w-sm rounded-3xl border border-line bg-white p-7 shadow-lg">
       <span className="relative block h-14 w-14 overflow-hidden rounded-2xl border border-line">
-        <Image src={siteConfig.logo.src} alt="" fill sizes="56px" className="object-contain" />
+        <Image src={logo} alt="" fill sizes="56px" unoptimized={logo.startsWith("/api/files/")} className="object-contain" />
       </span>
       <h1 className="mt-4 text-xl font-bold text-[#14284b]">Admin login</h1>
       <p className="mt-1 text-sm text-muted">{siteConfig.name}</p>

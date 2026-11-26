@@ -5,6 +5,7 @@ import { ExternalLink } from "lucide-react";
 import { isAdmin } from "@/lib/auth";
 import { adminSections } from "@/lib/adminSchema";
 import { siteConfig } from "@/config/site";
+import { getPhotos } from "@/lib/content";
 import AdminNav from "@/components/admin/AdminNav";
 import LogoutButton from "@/components/admin/LogoutButton";
 
@@ -15,6 +16,7 @@ const footLink = "flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-sm text-
 
 export default async function PanelLayout({ children }) {
   if (!(await isAdmin())) redirect("/admin/login");
+  const { logo } = await getPhotos();
   const items = [
     { key: "dashboard", title: "Dashboard", href: "/admin" },
     ...Object.entries(adminSections).map(([key, s]) => ({ key, title: s.title, href: `/admin/${key}` })),
@@ -25,7 +27,7 @@ export default async function PanelLayout({ children }) {
         <div className="flex items-center justify-between gap-3 px-4 py-3 md:py-5">
           <Link href="/admin" className="flex min-w-0 items-center gap-3">
             <span className="relative block h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-white">
-              <Image src={siteConfig.logo.src} alt="" fill sizes="40px" className="object-contain" />
+              <Image src={logo} alt="" fill sizes="40px" unoptimized={logo.startsWith("/api/files/")} className="object-contain" />
             </span>
             <span className="min-w-0 leading-tight">
               <span className="block text-sm font-semibold leading-snug text-white">{siteConfig.logo.text}</span>

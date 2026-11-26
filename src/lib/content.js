@@ -21,7 +21,7 @@ export const getContent = cache(async (key) => {
 
 export async function saveContent(key, data) {
   const db = await getDb();
-  if (!db) throw new Error("Database is not configured (MONGODB_URI).");
+  if (!db) throw new Error("Not saved: the website cannot connect to the database.");
   await db.collection("content").updateOne({ _id: key }, { $set: { data, updatedAt: new Date() } }, { upsert: true });
 }
 
@@ -80,3 +80,31 @@ export async function getVehicles() {
     .filter((v) => v.slug && v.name)
     .map((v) => ({ ...v, art: v.art || "sedan", group: v.group || "small", features: v.features ?? [] }));
 }
+
+// ---- Logo, banners, home cards, experiences and blog ----
+export async function getPhotos() {
+  const saved = (await getContent("photos")) ?? {};
+  // A removed photo falls back to the built-in one.
+  return Object.fromEntries(Object.entries(adminSections.photos.defaults).map(([k, v]) => [k, saved[k] || v]));
+}
+
+export async function getCategories() {
+  const c = await getContent("categories");
+  return (c?.items ?? [])
+    .filter((x) => x.title)
+    .map((x) => ({ ...x, image: x.image || images.hero, href: x.href?.startsWith("/") ? x.href : "/kashmir-tour-packages" }));
+}
+
+export async function getExperiences() {
+  const c = await getContent("experiences");
+  return (c?.items ?? []).filter((x) => x.title).map((x) => ({ ...x, image: x.image || images.hero }));
+}
+
+export async function getPosts() {
+  const c = await getContent("blog");
+  const today = new Date().toISOString().slice(0, 10);
+  return (c?.items ?? [])
+    .filter((p) => p.slug && p.title)
+    .map((p) => ({ ...p, image: p.image || images.hero, date: Date.parse(p.date) ? p.date : today, body: (p.body ?? []).filter((s) => s.h || s.p) }));
+}
+export const getPostBySlug = async (slug) => (await getPosts()).find((p) => p.slug === slug);

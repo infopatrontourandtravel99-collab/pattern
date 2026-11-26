@@ -7,12 +7,17 @@ import WhyChoose from "@/components/home/WhyChoose";
 import Testimonials from "@/components/home/Testimonials";
 import FinalCTA from "@/components/common/FinalCTA";
 import { buildMetadata } from "@/lib/seo";
+import { getContent } from "@/lib/content";
 
-export const metadata = buildMetadata({
+export async function generateMetadata() {
+  const home = await getContent("home");
+  return buildMetadata({
   title: "Kashmir Tour Packages & Holiday Planner | Patron Tour And Travels",
   description: "Plan your Kashmir trip with curated tour packages for Srinagar, Gulmarg and Pahalgam. Private transport, verified hotels and local experts.",
   path: "/",
-});
+  image: home.heroImage,
+  });
+}
 
 export default function HomePage() {
   return (

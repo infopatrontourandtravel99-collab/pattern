@@ -33,12 +33,12 @@ export const breadcrumbSchema = (items) => ({
   })),
 });
 
-export const organizationSchema = () => ({
+export const organizationSchema = (logo = siteConfig.logo.src) => ({
   "@context": "https://schema.org",
   "@type": "Organization",
   name: siteConfig.name,
   url: siteConfig.url,
-  logo: absoluteUrl("/images/logo.jpg"),
+  logo: absoluteUrl(logo),
   contactPoint: [
     {
       "@type": "ContactPoint",
@@ -99,7 +99,7 @@ export const packageSchema = (p) => ({
   },
 });
 
-export const articleSchema = (b) => ({
+export const articleSchema = (b, logo = siteConfig.logo.src) => ({
   "@context": "https://schema.org",
   "@type": "Article",
   headline: b.title,
@@ -111,7 +111,7 @@ export const articleSchema = (b) => ({
   publisher: {
     "@type": "Organization",
     name: siteConfig.name,
-    logo: { "@type": "ImageObject", url: absoluteUrl("/images/logo.jpg") },
+    logo: { "@type": "ImageObject", url: absoluteUrl(logo) },
   },
   mainEntityOfPage: absoluteUrl(`/blog/${b.slug}`),
 });

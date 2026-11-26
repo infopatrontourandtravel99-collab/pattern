@@ -8,7 +8,7 @@ import { siteConfig } from "@/config/site";
 import EnquiryModal from "@/components/forms/EnquiryModal";
 import Logo from "./Logo";
 
-export default function Header() {
+export default function Header({ logo }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function Header() {
       }`}
     >
       <div className={`container-x flex items-center justify-between transition-all duration-300 ${scrolled ? "h-16" : "h-16 sm:h-20"}`}>
-        <Logo />
+        <Logo src={logo} />
         <nav aria-label="Primary" className="hidden items-center gap-5 xl:flex 2xl:gap-8">
           {siteConfig.nav.map((n) => (
             <Link
